@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import Any, Literal, TypedDict
 from langgraph.graph import END, StateGraph
 from agent_nodes import llm_critic, llm_writer
-from tool_nodes import node_preprocess, node_asr, node_ocr, node_align, node_rag_d_self_index
+from tool_nodes import node_preprocess, node_asr, node_ocr, node_align
 # 假设工具函数已在 tool_nodes.py 中实现；当前用 mock 以便本文件可直接运行
 
 # 这部分也是先mock的，等到完成所有工具函数后再进一步细化
@@ -101,7 +101,7 @@ def build_main_graph():
     g.add_node("asr", node_asr)
     g.add_node("ocr", node_ocr)
     g.add_node("align", node_align)
-    g.add_node("rag_d", node_rag_d_self_index)
+    # g.add_node("rag_d", node_rag_d_self_index)
 
     summarize_sg = build_summarize_subgraph()
     g.add_node("summarize_loop", summarize_sg)
@@ -110,8 +110,7 @@ def build_main_graph():
     g.add_edge("preprocess", "asr")
     g.add_edge("asr", "ocr")
     g.add_edge("ocr", "align")
-    g.add_edge("align", "rag_d")
-    g.add_edge("rag_d", "summarize_loop")
+    g.add_edge("align", "summarize_loop")
     g.add_edge("summarize_loop", END)
 
     return g.compile()
@@ -124,7 +123,7 @@ if __name__ == "__main__":
     app = build_main_graph()
 
     init: ConferenceState = {
-        "video_path": "D:\\DL_final_project\\dataset\\videos\\case_02.mp4",
+        "video_path": r"dataset\case_02.mp4",
         "iteration": 0,
         "max_iterations": 5,
         "score_threshold": 8.5,
