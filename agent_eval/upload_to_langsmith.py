@@ -21,8 +21,8 @@ def upload_dataset():
         dataset = client.read_dataset(dataset_name=dataset_name)
         
     # 3. 设置本地文件路径
-    json_path = r"D:\DL_final_project\dataset\dataset.json"
-    video_dir = r"D:\DL_final_project\dataset\vedios"  # 注意你的文件夹名是 vedios
+    json_path = r"\dataset.json"
+    video_dir = r"\dataset"  # 注意你的文件夹名是 vedios
     
     with open(json_path, "r", encoding="utf-8") as f:
         cases = json.load(f)
