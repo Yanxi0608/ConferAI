@@ -1,13 +1,16 @@
 import json
 import os
 from langsmith import Client
+from dotenv import load_dotenv
+
+load_dotenv() # 确保client读取到正确的langsmith环境变量
 
 def upload_dataset():
     # 1. 初始化 LangSmith 客户端
     # ⚠️ 提示：在最终的项目交付代码中，建议删掉 api_key 参数，仅依靠环境变量读取，防止密钥泄露。
     client = Client()
     
-    dataset_name = "ConferAI-Eval-Set"
+    dataset_name = "Conference-Eval-Set" # 与README匹配
     
     # 2. 检查数据是否存在
     if not client.has_dataset(dataset_name=dataset_name):
@@ -21,8 +24,8 @@ def upload_dataset():
         dataset = client.read_dataset(dataset_name=dataset_name)
         
     # 3. 设置本地文件路径
-    json_path = r"\dataset.json"
-    video_dir = r"\dataset"  # 注意你的文件夹名是 vedios
+    json_path = r"dataset\dataset.json"
+    video_dir = r"dataset"  
     
     with open(json_path, "r", encoding="utf-8") as f:
         cases = json.load(f)
