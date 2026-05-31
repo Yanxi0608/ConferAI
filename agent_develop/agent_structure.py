@@ -115,16 +115,6 @@ def build_main_graph():
 
     return g.compile()
 
-# ====langsmith顶层trace入口====
-from langsmith import traceable
-
-@traceable(name="conference_agent_run")
-def run_conference_agent(init_state: ConferenceState) -> dict[str, Any]:
-    app = build_main_graph()
-    return app.invoke(init_state)
-
-# ===============================
-
 
 # 已完成测试
 if __name__ == "__main__":
@@ -141,7 +131,7 @@ if __name__ == "__main__":
 
     print("🚀 开始运行 Agent 工作流...\n" + "=" * 40)
 
-    final_state = run_conference_agent(init)
+    final_state = app.invoke(init)
 
     print("=" * 40 + "\n🎉 最终生成的总结：\n")
     print(final_state.get("draft_summary", ""))

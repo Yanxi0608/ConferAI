@@ -17,11 +17,6 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
-from langsmith import traceable
-
-# ==为langsmith添加环境变量，确保能正确记录和上传trace日志==
-from dotenv import load_dotenv
-load_dotenv()
 
 # ==========共享状态定义（后续需要进一步统一数据格式）===================
 class AlignedUnit(TypedDict, total=False):
@@ -129,8 +124,6 @@ def _sample_keyframe_timestamps(duration: float, count: int = 5) -> list[float]:
 # keyframes: 关键帧列表。每个元素是一个字典：
 # 字典格式：{“t”:时间戳,“path”:该时间戳对应的图片物理路径path（供OCR节点使用）}
 
-
-@traceable(name="node_preprocess")
 def node_preprocess(state: ConferenceState) -> dict[str, Any]:
     print("🎬 [节点执行]: 预处理视频（集成 1.ipynb 智能翻页算法）...")
     
@@ -258,7 +251,7 @@ def node_preprocess(state: ConferenceState) -> dict[str, Any]:
 
 
 
-@traceable(name="node_asr")
+
 def node_asr(state: ConferenceState) -> dict[str, Any]:
     print("🎧 [节点执行]: 语音识别 (智能动态 Prompt 泛化版)...")
     
@@ -332,7 +325,8 @@ def _collect_slide_text(ocr_blocks: list[dict[str, Any]]) -> str:
 # }
 
 
-@traceable(name="node_align")
+
+
 def node_align(state: ConferenceState) -> dict[str, Any]:
     
     print("🔗 [节点执行]: 视听时间戳高精度智能对齐...")
@@ -422,8 +416,6 @@ def _get_structure_pipeline():
 import cv2
 import numpy as np
 
-
-@traceable(name="node_ocr")
 def node_ocr(state: ConferenceState) -> dict[str, Any]:
     print("👁️ [节点执行]: 图像文字识别 (Beamer：版面分析+LaTeX公式识别)...")
     try:

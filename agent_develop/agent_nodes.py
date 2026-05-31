@@ -21,9 +21,6 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
-# langsmith测试
-from langsmith import traceable
-
 # 模块 import 时即加载 .env，确保能读到 DASHSCOPE_API_KEY
 load_dotenv()
 
@@ -89,7 +86,6 @@ def _format_evidence(aligned_units: list[Any], rag_snippets: list[Any]) -> str:
     )
 
 
-@traceable(name="llm_writer")
 def llm_writer(state: dict[str, Any]) -> dict[str, Any]:
     """
     Actor（生成者）节点。
@@ -168,7 +164,7 @@ def llm_writer(state: dict[str, Any]) -> dict[str, Any]:
     # 只返回需要更新的 state 字段；LangGraph 会 merge 进全局 state
     return {"draft_summary": draft}
 
-@traceable(name="llm_critic")
+
 def llm_critic(state: dict[str, Any]) -> dict[str, Any]:
     """
     Critic（评审者）节点。
